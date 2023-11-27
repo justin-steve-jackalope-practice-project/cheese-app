@@ -1,4 +1,4 @@
-import {sayHello} from "./utils.js";
+import { obToStrCheese } from "./utils.js";
 
 "use strict";
 
@@ -239,4 +239,4 @@ alert('Welcome to Cheeseup!');
 // display output
 
 
-console.log(sayHello());
+console.log(obToStrCheese(cheeses[cheeses.length - 1]));
