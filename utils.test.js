@@ -1,5 +1,5 @@
 import {describe, expect, test} from "vitest";
-import {obToStrCheese, cheesesToStr} from "./utils.js";
+import {obToStrCheese, cheesesToStr, searchCheeses} from "./utils.js";
 
 const cheese = {
     "name": "Cashel Blue",
@@ -37,6 +37,19 @@ const fourCheeses = [
         "country_of_origin": "Mexico"
     }
 ];
+
+
+const fiveCheeses = [...fourCheeses, {
+    "name": "Cheddar",
+    "type": "hard",
+    "country_of_origin": "United Kingdom"
+}];
+
+const sixCheeses = [...fiveCheeses, {
+    "name": "Parmesan",
+    "type": "hard",
+    "country_of_origin": "Italy"
+}];
 
 
 // Tests
@@ -105,4 +118,67 @@ describe('filterCheesesByType', () => {
             }
         ]);
     });
+});
+
+describe('searchCheeses', () => {
+    test('it should be defined when called on fourCheeses', () => {
+        expect(fourCheeses.searchCheeses).toBeDefined()
+    });
+    test('it should return an empty array when passed "hello" and "country" when called on fourCheeses', () => {
+        expect(fourCheeses.searchCheeses('hello', 'country')).toStrictEqual([]);
+    });
+    test('it should return a fourCheeses array when passed "" and "name" when called on fourCheeses', () => {
+        expect(fourCheeses.searchCheeses('', 'name')).toStrictEqual(fourCheeses);
+    });
+    test('it should return an array with the "Cashel Blue" cheese object when passed "Cachel Blue" and "name" when called on fourCheeses', () => {
+        expect(fourCheeses.searchCheeses('Cashel Blue', 'name')).toStrictEqual([{
+            "name": "Cashel Blue",
+            "type": "blue",
+            "country_of_origin": "Ireland"
+        }]);
+    });
+    test('it should return an array with the "Taleggio" cheese object when passed "Taleggio" and "name" when called on fourCheeses', () => {
+        expect(fourCheeses.searchCheeses('Taleggio', 'name')).toStrictEqual([{
+            "name": "Taleggio",
+            "type": "semi-soft",
+            "country_of_origin": "Italy"
+        }]);
+    });
+    test('it should return an array with the "Cashel Blue" and "Chedder" cheese objects when passed "c" and "name" when called on fiveCheeses', () => {
+        expect(fiveCheeses.searchCheeses('c', 'name')).toStrictEqual([{
+            "name": "Cashel Blue",
+            "type": "blue",
+            "country_of_origin": "Ireland"
+        },
+        {
+            "name": "Cheddar",
+            "type": "hard",
+            "country_of_origin": "United Kingdom"
+        }]);
+    });
+    test('it should return an array with the "Taleggio" and "Parmesan" cheese objects when passed "italy" and "country" when called on sixCheeses', () => {
+        expect(sixCheeses.searchCheeses('italy', 'country')).toStrictEqual([{
+            "name": "Taleggio",
+            "type": "semi-soft",
+            "country_of_origin": "Italy"
+        },
+        {
+            "name": "Parmesan",
+            "type": "hard",
+            "country_of_origin": "Italy"
+        }]);
+    });
+    test('it should return an array with the "Taleggio" and "Parmesan" cheese objects when passed "it" and "country" when called on sixCheeses', () => {
+        expect(sixCheeses.searchCheeses('it', 'country')).toStrictEqual([{
+            "name": "Taleggio",
+            "type": "semi-soft",
+            "country_of_origin": "Italy"
+        },
+        {
+            "name": "Parmesan",
+            "type": "hard",
+            "country_of_origin": "Italy"
+        }]);
+    });
+
 });

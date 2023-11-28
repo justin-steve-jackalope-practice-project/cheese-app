@@ -1,4 +1,4 @@
-import { obToStrCheese } from "./utils.js";
+import {cheesesToStr, obToStrCheese} from "./utils.js";
 
 "use strict";
 
@@ -232,11 +232,21 @@ const cheeses = [
 
 alert('Welcome to Cheeseup!');
 
-// filter cheeses
+// get cheese filter input
+const filterType = prompt('Please pick a filtering option [soft/hard/semi-hard/blue].');
+validateFilterType(filterType);
+
+// get cheese search input
+const searchType = prompt('Please pick a searching option [name/country].');
+validateSearchType(searchType);
+
+const query = prompt(`Please enter a ${searchType} search query.`);
 
 // search cheeses
+// const searchedCheeses = searchedCheeses
+//     .filterCheesesByType(filterType)
+//     .searchCheeses(query, searchType);
 
-// display output
+// alert cheeses
+// alert(`Here are your cheeses...${cheesesToStr(searchedCheeses)}`);
 
-
-console.log(obToStrCheese(cheeses[cheeses.length - 1]));
