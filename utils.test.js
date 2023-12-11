@@ -1,5 +1,5 @@
 import {describe, expect, test} from "vitest";
-import {obToStrCheese, cheesesToStr, searchCheeses} from "./utils.js";
+import {obToStrCheese, cheesesToStr, searchCheeses, validateFilterType} from "./utils.js";
 
 const cheese = {
     "name": "Cashel Blue",
@@ -150,11 +150,11 @@ describe('searchCheeses', () => {
             "type": "blue",
             "country_of_origin": "Ireland"
         },
-        {
-            "name": "Cheddar",
-            "type": "hard",
-            "country_of_origin": "United Kingdom"
-        }]);
+            {
+                "name": "Cheddar",
+                "type": "hard",
+                "country_of_origin": "United Kingdom"
+            }]);
     });
     test('it should return an array with the "Taleggio" and "Parmesan" cheese objects when passed "italy" and "country" when called on sixCheeses', () => {
         expect(sixCheeses.searchCheeses('italy', 'country')).toStrictEqual([{
@@ -162,11 +162,11 @@ describe('searchCheeses', () => {
             "type": "semi-soft",
             "country_of_origin": "Italy"
         },
-        {
-            "name": "Parmesan",
-            "type": "hard",
-            "country_of_origin": "Italy"
-        }]);
+            {
+                "name": "Parmesan",
+                "type": "hard",
+                "country_of_origin": "Italy"
+            }]);
     });
     test('it should return an array with the "Taleggio" and "Parmesan" cheese objects when passed "it" and "country" when called on sixCheeses', () => {
         expect(sixCheeses.searchCheeses('it', 'country')).toStrictEqual([{
@@ -174,11 +174,34 @@ describe('searchCheeses', () => {
             "type": "semi-soft",
             "country_of_origin": "Italy"
         },
-        {
-            "name": "Parmesan",
-            "type": "hard",
-            "country_of_origin": "Italy"
-        }]);
+            {
+                "name": "Parmesan",
+                "type": "hard",
+                "country_of_origin": "Italy"
+            }]);
     });
-
 });
+
+describe('validateFilterType', () => {
+    test('it should be defined', () => {
+        expect(validateFilterType).toBeDefined();
+    });
+    test('it should return false when passed a number', () => {
+        expect(validateFilterType(7)).toBeFalsy();
+        expect(validateFilterType(-7)).toBeFalsy();
+        expect(validateFilterType(0)).toBeFalsy();
+        expect(validateFilterType(1000.45)).toBeFalsy();
+    });
+    test('it should return true when passed the string any of the strings "soft", "hard", "semi-hard", "blue", regardless of case and false otherwise', () => {
+        expect(validateFilterType('soft')).toBeTruthy();
+        expect(validateFilterType('SofT')).toBeTruthy();
+        expect(validateFilterType('SOFT')).toBeTruthy();
+        expect(validateFilterType('HARD')).toBeTruthy();
+        expect(validateFilterType('semi-HARD')).toBeTruthy();
+        expect(validateFilterType('BlUe')).toBeTruthy();
+        expect(validateFilterType('sotf')).toBeFalsy();
+        expect(validateFilterType('')).toBeFalsy();
+        expect(validateFilterType('123')).toBeFalsy();
+    });
+});
+

@@ -14,6 +14,18 @@ export function filterCheesesByType(type) {
 }
 
 // validateSearchType
+export function validateFilterType(type) {
+    const validTypes = [
+        'soft',
+        'hard',
+        'semi-hard',
+        'blue'
+    ];
+    if (typeof type !== 'string') {
+        return false;
+    }
+    return validTypes.includes(type.toLowerCase());
+}
 
 // validateFilterType
 
