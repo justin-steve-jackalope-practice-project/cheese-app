@@ -1,4 +1,4 @@
-import {cheesesToStr, obToStrCheese} from "./utils.js";
+import {cheesesToStr, obToStrCheese, validateFilterType, validateSearchType} from "./utils.js";
 
 "use strict";
 
@@ -232,21 +232,55 @@ const cheeses = [
 
 alert('Welcome to Cheeseup!');
 
-// get cheese filter input
-const filterType = prompt('Please pick a filtering option [soft/hard/semi-hard/blue].');
-validateFilterType(filterType);
+function getFilterInput() {
+    const filterType = prompt('Please pick a filtering option [soft/hard/semi-hard/blue].');
+    if (!validateFilterType(filterType)) {
+        alert('Invalid filter type!');
+        throw new Error("Invalid filter type!");
+    }
+    return filterType;
+}
 
-// get cheese search input
-const searchType = prompt('Please pick a searching option [name/country].');
-validateSearchType(searchType);
+function getSearchType() {
+    // get cheese search input
+    const searchType = prompt('Please pick a searching option [name/country].');
+    if (!validateSearchType(searchType)) {
+        alert('Invalid search type!');
+        throw new Error("Invalid search type!");
+    }
+    return searchType;
+}
 
-const query = prompt(`Please enter a ${searchType} search query.`);
+function getUserInput() {
+    const filterType = getFilterInput();
+    const searchType = getSearchType();
+    const query = prompt(`Please enter a ${searchType} search query.`);
+    return {
+        filterType,
+        searchType,
+        query
+    }
+}
 
-// search cheeses
-// const searchedCheeses = searchedCheeses
-//     .filterCheesesByType(filterType)
-//     .searchCheeses(query, searchType);
+function searchCheeses() {
+    const {filterType, searchType, query} = getUserInput();
+    return cheeses
+        .filterCheesesByType(filterType)
+        .searchCheeses(query, searchType);
+}
 
-// alert cheeses
-// alert(`Here are your cheeses...${cheesesToStr(searchedCheeses)}`);
+function init() {
+    // search cheeses
+    const searchedCheeses = searchCheeses();
+
+    // alert cheeses
+    if (searchedCheeses.length === 0) {
+        alert('No cheeses found!');
+    } else {
+        alert(`Here are your cheeses...\n${cheesesToStr(searchedCheeses)}`);
+    }
+}
+
+init();
+
 

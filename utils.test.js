@@ -1,5 +1,5 @@
 import {describe, expect, test} from "vitest";
-import {obToStrCheese, cheesesToStr, searchCheeses, validateFilterType} from "./utils.js";
+import {obToStrCheese, cheesesToStr, searchCheeses, validateFilterType, validateSearchType} from "./utils.js";
 
 const cheese = {
     "name": "Cashel Blue",
@@ -192,7 +192,7 @@ describe('validateFilterType', () => {
         expect(validateFilterType(0)).toBeFalsy();
         expect(validateFilterType(1000.45)).toBeFalsy();
     });
-    test('it should return true when passed the string any of the strings "soft", "hard", "semi-hard", "blue", regardless of case and false otherwise', () => {
+    test('it should return true when passed any of the strings "soft", "hard", "semi-hard", "blue", regardless of case, and false otherwise', () => {
         expect(validateFilterType('soft')).toBeTruthy();
         expect(validateFilterType('SofT')).toBeTruthy();
         expect(validateFilterType('SOFT')).toBeTruthy();
@@ -202,6 +202,27 @@ describe('validateFilterType', () => {
         expect(validateFilterType('sotf')).toBeFalsy();
         expect(validateFilterType('')).toBeFalsy();
         expect(validateFilterType('123')).toBeFalsy();
+    });
+});
+
+describe('validateSearchType', () => {
+    test('it should be defined', () => {
+        expect(validateSearchType).toBeDefined();
+    });
+    test('it should return false when not passed a string', () => {
+        expect(validateSearchType(1)).toBeFalsy();
+        expect(validateSearchType(null)).toBeFalsy();
+    });
+    test('it should return true when passed either the string "name" or "country", regardless of case, and false otherwise', () => {
+        expect(validateSearchType('name')).toBeTruthy();
+        expect(validateSearchType('NAME')).toBeTruthy();
+        expect(validateSearchType('NaME')).toBeTruthy();
+        expect(validateSearchType('COUNTRY')).toBeTruthy();
+        expect(validateSearchType('country')).toBeTruthy();
+        expect(validateSearchType('blue')).toBeFalsy();
+        expect(validateSearchType('test')).toBeFalsy();
+        expect(validateSearchType('')).toBeFalsy();
+        expect(validateSearchType('123')).toBeFalsy();
     });
 });
 

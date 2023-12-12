@@ -13,7 +13,14 @@ export function filterCheesesByType(type) {
     });
 }
 
-// validateSearchType
+function validate(types, input) {
+    if (typeof input !== 'string') {
+        return false;
+    }
+    return types.includes(input.toLowerCase());
+}
+
+// validateFilterType
 export function validateFilterType(type) {
     const validTypes = [
         'soft',
@@ -21,13 +28,17 @@ export function validateFilterType(type) {
         'semi-hard',
         'blue'
     ];
-    if (typeof type !== 'string') {
-        return false;
-    }
-    return validTypes.includes(type.toLowerCase());
+    return validate(validTypes, type);
 }
 
-// validateFilterType
+// validateSearchType
+export function validateSearchType(type) {
+    const validTypes = [
+        'name',
+        'country'
+    ];
+    return validate(validTypes, type);
+}
 
 // searchCheeses(query, searchType)
 export function searchCheeses(query, searchType) {
